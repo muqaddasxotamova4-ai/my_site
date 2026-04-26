@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Future Message ULTRA</title>
+    <title>Future Message ULTRA PRO</title>
     <style>
         body {
-            background: black;
+            background: linear-gradient(135deg, #000000, #001f1f);
             color: #00ffcc;
             text-align: center;
             font-family: monospace;
@@ -12,17 +12,26 @@
             overflow: hidden;
         }
 
+        h1 {
+            font-size: 35px;
+        }
+
         input, button {
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             margin: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
         button {
             background: #00ffcc;
             cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #00ccaa;
         }
 
         #output {
@@ -43,7 +52,7 @@
 
 <canvas id="bg"></canvas>
 
-<h1>📡 Kelajakdan xabar ULTRA</h1>
+<h1>📡 Kelajakdan xabar ULTRA PRO</h1>
 
 <input type="text" id="name" placeholder="Ismingni yoz">
 <br>
@@ -51,10 +60,20 @@
 
 <div id="output"></div>
 
-<!-- OVOZ -->
-<audio id="sound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+<!-- CLICK SOUND -->
+<audio id="clickSound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
 <script>
+    // MUSIC START (user interactiondan keyin ishlaydi)
+    document.body.addEventListener("click", () => {
+        document.getElementById("bgMusic").play();
+    }, { once: true });
+
     // typing effect
     function typeText(text) {
         let i = 0;
@@ -82,15 +101,23 @@
         let random = messages[Math.floor(Math.random() * messages.length)];
         let finalText = "🔮 2030-yildan xabar: " + name + ", " + random;
 
-        // OVOZ CHALISH
-        document.getElementById("sound").play();
+        // CLICK SOUND
+        document.getElementById("clickSound").play();
 
+        // typing
         typeText(finalText);
+
+        // 🔊 SPEECH (gapiradi)
+        let speech = new SpeechSynthesisUtterance(finalText);
+        speech.lang = "uz-UZ";
+        speech.rate = 1;
+        speech.pitch = 1;
+        speechSynthesis.speak(speech);
 
         // secret mode
         if (name.toLowerCase() === "admin") {
             setTimeout(() => {
-                document.body.innerHTML = "<h1>🔐 SECRET MODE ACTIVATED 😎</h1>";
+                document.body.innerHTML = "<h1>🔐 SECRET MODE 😎</h1>";
             }, 2000);
         }
     }
@@ -104,7 +131,7 @@
 
     let stars = [];
 
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 150; i++) {
         stars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
@@ -118,7 +145,7 @@
 
         stars.forEach(star => {
             ctx.fillRect(star.x, star.y, star.size, star.size);
-            star.y += 0.4;
+            star.y += 0.5;
             if (star.y > canvas.height) star.y = 0;
         });
 
