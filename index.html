@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Future Message ULTRA</title>
+    <style>
+        body {
+            background: black;
+            color: #00ffcc;
+            text-align: center;
+            font-family: monospace;
+            padding-top: 100px;
+            overflow: hidden;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #00ffcc;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 30px;
+            font-size: 22px;
+            min-height: 40px;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<h1>📡 Kelajakdan xabar ULTRA</h1>
+
+<input type="text" id="name" placeholder="Ismingni yoz">
+<br>
+<button onclick="generateMessage()">Xabarni olish</button>
+
+<div id="output"></div>
+
+<!-- OVOZ -->
+<audio id="sound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+
+<script>
+    // typing effect
+    function typeText(text) {
+        let i = 0;
+        let output = document.getElementById("output");
+        output.innerHTML = "";
+
+        let interval = setInterval(() => {
+            output.innerHTML += text[i];
+            i++;
+            if (i >= text.length) clearInterval(interval);
+        }, 40);
+    }
+
+    function generateMessage() {
+        let name = document.getElementById("name").value;
+
+        let messages = [
+            "sen katta dasturchi bo‘lasan 💻",
+            "sen boy bo‘lasan 💰",
+            "sen chet elga ketasan ✈️",
+            "sen startup ochasan 🚀",
+            "sen mashhur bo‘lasan ⭐"
+        ];
+
+        let random = messages[Math.floor(Math.random() * messages.length)];
+        let finalText = "🔮 2030-yildan xabar: " + name + ", " + random;
+
+        // OVOZ CHALISH
+        document.getElementById("sound").play();
+
+        typeText(finalText);
+
+        // secret mode
+        if (name.toLowerCase() === "admin") {
+            setTimeout(() => {
+                document.body.innerHTML = "<h1>🔐 SECRET MODE ACTIVATED 😎</h1>";
+            }, 2000);
+        }
+    }
+
+    // galaxy background
+    let canvas = document.getElementById("bg");
+    let ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+
+    for (let i = 0; i < 120; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2
+        });
+    }
+
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00ffcc";
+
+        stars.forEach(star => {
+            ctx.fillRect(star.x, star.y, star.size, star.size);
+            star.y += 0.4;
+            if (star.y > canvas.height) star.y = 0;
+        });
+
+        requestAnimationFrame(drawStars);
+    }
+
+    drawStars();
+</script>
+
+</body>
+</html>
